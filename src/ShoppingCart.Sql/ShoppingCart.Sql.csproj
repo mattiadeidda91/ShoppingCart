@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dapper\" />
     <Folder Include="Hangfire\" />
   </ItemGroup>
 
