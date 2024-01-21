@@ -7,15 +7,29 @@ namespace ShoppingCart.Sql.Dapper.Repository
     public class UserRepository : Repository<User>, IUserRepository
     {
         public UserRepository(IDapperDataAccess dapperDataAccess)
-            : base(TableNameUsers, dapperDataAccess)
+           : base(TableNameUsers, dapperDataAccess)
         { }
 
-        public bool Exists(string lastname)
+        public async Task<(IEnumerable<User?>, IEnumerable<Product?>)> GetUserAndProductsAsync()
         {
-            return dapperDataAccess.QuerySingleOrDefault<User>(
-                $"SELECT * FROM {TableNameUsers} WHERE Lastname=@Lastname", 
-                new { Lastname = lastname }
-            ) != null;
+            var result = await dapperDataAccess.QueryMultipleAsync<User, Product>($@"
+                    SELECT * FROM {TableNameUsers}; 
+                    SELECT * FROM {TableNameProducts}");
+
+            return result;
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByProductIdAsync(int productId)
+        {
+            var query = $@"
+                SELECT u.*
+                FROM {TableNameUsers} u
+                INNER JOIN {TableNameUserProducts} up ON u.Id = up.UserId
+                WHERE up.ProductId = @ProductId;";
+
+            var users = await dapperDataAccess.QueryAsync<User>(query, new { ProductId = productId });
+
+            return users;
         }
     }
 }

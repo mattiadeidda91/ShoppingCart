@@ -2,43 +2,44 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Abstractions.Dapper.Entities;
 using ShoppingCart.Abstractions.Dapper.Interfaces;
+using ShoppingCart.Abstractions.Dapper.IRepository;
 using ShoppingCart.Abstractions.Models.Dtos;
 
 namespace ShoppingCart.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class ProductController : ControllerBase
     {
-        private readonly IUserRepository userRepositoryAsync;
+        private readonly IProductRepository productRepositoryAsync;
         private readonly IMapper mapper;
         private readonly ILogger<UserController> logger;
 
-        public UserController(IUserRepository userRepositoryAsync, IMapper mapper, ILogger<UserController> logger)
+        public ProductController(IProductRepository productRepositoryAsync, IMapper mapper, ILogger<UserController> logger)
         {
-            this.userRepositoryAsync = userRepositoryAsync ?? throw new ArgumentNullException(nameof(userRepositoryAsync));
+            this.productRepositoryAsync = productRepositoryAsync ?? throw new ArgumentNullException(nameof(productRepositoryAsync));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            var users = await userRepositoryAsync.GetAllAsync();
+            var users = await productRepositoryAsync.GetAllAsync();
 
             if (users.Any())
-                return Ok(mapper.Map<IEnumerable<UserDto>>(users));
+                return Ok(mapper.Map<IEnumerable<ProductDto>>(users));
             else
                 return NotFound();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUserById(int id)
+        public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
-            var user = await userRepositoryAsync.GetByIdAsync(id);
+            var user = await productRepositoryAsync.GetByIdAsync(id);
 
             if(user != null)
-                return Ok(mapper.Map<UserDto>(user));
+                return Ok(mapper.Map<ProductDto>(user));
             else
                 return NotFound();
         }
@@ -46,7 +47,7 @@ namespace ShoppingCart.Api.Controllers
         [HttpGet("get-users-and-products")]
         public async Task<IActionResult> GetUsersAndProducts()
         {
-            (var users, var products) = await userRepositoryAsync.GetUserAndProductsAsync();
+            (var users, var products) = await productRepositoryAsync.GetUserAndProductsAsync();
 
             var usersDto = mapper.Map<IEnumerable<UserDto>>(users);
             var productsDto = mapper.Map<IEnumerable<ProductDto>>(products);
@@ -60,14 +61,14 @@ namespace ShoppingCart.Api.Controllers
                 return NotFound();
         }
 
-        [HttpGet("Product/{productId}")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersByProductId(int productId)
+        [HttpGet("User/{userId}")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductByUserId(int userId)
         {
-            var users = await userRepositoryAsync.GetUsersByProductIdAsync(productId);
+            var users = await productRepositoryAsync.GetProductByUserIdAsync(userId);
 
             if (users.Any())
             {
-                var usersDto = mapper.Map<IEnumerable<UserDto>>(users);
+                var usersDto = mapper.Map<IEnumerable<ProductDto>>(users);
 
                 return Ok(usersDto);
             }
@@ -76,28 +77,28 @@ namespace ShoppingCart.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddUser([FromBody] UserDto userDto)
+        public async Task<ActionResult<int>> AddProduct([FromBody] ProductDto productDto)
         {
-            var user = mapper.Map<User>(userDto);
+            var product = mapper.Map<Product>(productDto);
 
-            var newUserId = await userRepositoryAsync.InsertAsync(user);
+            var newUserId = await productRepositoryAsync.InsertAsync(product);
 
             if (newUserId > 0)
             {
-                var route = Url.Action("GetUserById", new { id = newUserId });
-                return Created(route ?? "/GetUserById", newUserId);
+                var route = Url.Action("GetProductById", new { id = newUserId });
+                return Created(route ?? "/GetProductById", newUserId);
             }    
             else
                 return BadRequest();
         }
 
         [HttpPut]
-        public async Task<ActionResult<UserDto>> UpdateUser([FromQuery] int id, [FromBody] UserDto userDto)
+        public async Task<ActionResult<ProductDto>> UpdateUser([FromQuery] int id, [FromBody] ProductDto userDto)
         {
-            var user = mapper.Map<User>(userDto);
+            var user = mapper.Map<Product>(userDto);
             user.Id = id;
 
-            var updateResult = await userRepositoryAsync.UpdateAsync(user);
+            var updateResult = await productRepositoryAsync.UpdateAsync(user);
 
             if (updateResult > 0)
             {
@@ -110,7 +111,7 @@ namespace ShoppingCart.Api.Controllers
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUser([FromQuery] int id)
         {
-            var result = await userRepositoryAsync.DeleteAsync(id);
+            var result = await productRepositoryAsync.DeleteAsync(id);
 
             if (result > 0)
             {
