@@ -1,7 +1,10 @@
-﻿namespace ShoppingCart.Abstractions.Dapper.Interfaces
+﻿using System.Data;
+
+namespace ShoppingCart.Abstractions.Dapper.Interfaces
 {
     public interface IDapperDataAccess
     {
+        IDbConnection GetConnection();
         IEnumerable<TEntity> Query<TEntity>(string sqlQuery, object? param = null);
         TEntity? QuerySingleOrDefault<TEntity>(string sqlQuery, object? param = null);
         TEntity? QueryFirstOrDefault<TEntity>(string sqlQuery, object? param = null);

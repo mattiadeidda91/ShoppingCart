@@ -1,5 +1,4 @@
-﻿using ShoppingCart.Abstractions.Dapper.Entities;
-using ShoppingCart.Abstractions.Dapper.Interfaces;
+﻿using ShoppingCart.Abstractions.Dapper.Interfaces;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;

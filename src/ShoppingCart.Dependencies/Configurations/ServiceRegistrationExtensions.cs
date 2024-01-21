@@ -15,6 +15,7 @@ namespace ShoppingCart.Api.Configurations
             _ = services.AddSingleton<IDapperDataAccess, DapperDataAccess>();
             _ = services.AddScoped<IUserRepository, UserRepository>();
             _ = services.AddScoped<IProductRepository, ProductRepository>();
+            _ = services.AddScoped<ICartRepository, CartRepository>();
 
             return services;
         }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using ShoppingCart.Abstractions.Dapper.DbContext;
 using ShoppingCart.Abstractions.Dapper.Interfaces;
+using System.Data;
 
 namespace ShoppingCart.Abstractions.Dapper
 {
@@ -19,6 +20,11 @@ namespace ShoppingCart.Abstractions.Dapper
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.dbContext = dbContext;
+        }
+
+        public IDbConnection GetConnection()
+        {
+            return dbContext.CreateConnection();
         }
 
         #region Sync

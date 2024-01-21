@@ -10,6 +10,7 @@ namespace ShoppingCart.Api.Mappers
         {
             _ = CreateMap<UserDto, User>().ReverseMap();
             _ = CreateMap<ProductDto, Product>().ReverseMap();
+            _ = CreateMap<CartDto, Cart>().ReverseMap();
         }
     }
 }

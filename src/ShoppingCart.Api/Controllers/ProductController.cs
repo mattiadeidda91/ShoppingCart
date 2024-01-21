@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Abstractions.Dapper.Entities;
-using ShoppingCart.Abstractions.Dapper.Interfaces;
 using ShoppingCart.Abstractions.Dapper.IRepository;
 using ShoppingCart.Abstractions.Models.Dtos;
 
@@ -13,9 +12,9 @@ namespace ShoppingCart.Api.Controllers
     {
         private readonly IProductRepository productRepositoryAsync;
         private readonly IMapper mapper;
-        private readonly ILogger<UserController> logger;
+        private readonly ILogger<ProductController> logger;
 
-        public ProductController(IProductRepository productRepositoryAsync, IMapper mapper, ILogger<UserController> logger)
+        public ProductController(IProductRepository productRepositoryAsync, IMapper mapper, ILogger<ProductController> logger)
         {
             this.productRepositoryAsync = productRepositoryAsync ?? throw new ArgumentNullException(nameof(productRepositoryAsync));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -25,10 +24,10 @@ namespace ShoppingCart.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            var users = await productRepositoryAsync.GetAllAsync();
+            var products = await productRepositoryAsync.GetAllAsync();
 
-            if (users.Any())
-                return Ok(mapper.Map<IEnumerable<ProductDto>>(users));
+            if (products.Any())
+                return Ok(mapper.Map<IEnumerable<ProductDto>>(products));
             else
                 return NotFound();
         }
@@ -36,10 +35,10 @@ namespace ShoppingCart.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
-            var user = await productRepositoryAsync.GetByIdAsync(id);
+            var product = await productRepositoryAsync.GetByIdAsync(id);
 
-            if(user != null)
-                return Ok(mapper.Map<ProductDto>(user));
+            if(product != null)
+                return Ok(mapper.Map<ProductDto>(product));
             else
                 return NotFound();
         }
@@ -64,13 +63,13 @@ namespace ShoppingCart.Api.Controllers
         [HttpGet("User/{userId}")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductByUserId(int userId)
         {
-            var users = await productRepositoryAsync.GetProductByUserIdAsync(userId);
+            var products = await productRepositoryAsync.GetProductByUserIdAsync(userId);
 
-            if (users.Any())
+            if (products.Any())
             {
-                var usersDto = mapper.Map<IEnumerable<ProductDto>>(users);
+                var productsDto = mapper.Map<IEnumerable<ProductDto>>(products);
 
-                return Ok(usersDto);
+                return Ok(productsDto);
             }
             else
                 return NotFound();
@@ -81,35 +80,35 @@ namespace ShoppingCart.Api.Controllers
         {
             var product = mapper.Map<Product>(productDto);
 
-            var newUserId = await productRepositoryAsync.InsertAsync(product);
+            var newProductId = await productRepositoryAsync.InsertAsync(product);
 
-            if (newUserId > 0)
+            if (newProductId > 0)
             {
-                var route = Url.Action("GetProductById", new { id = newUserId });
-                return Created(route ?? "/GetProductById", newUserId);
+                var route = Url.Action("GetProductById", new { id = newProductId });
+                return Created(route ?? "/GetProductById", newProductId);
             }    
             else
                 return BadRequest();
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductDto>> UpdateUser([FromQuery] int id, [FromBody] ProductDto userDto)
+        public async Task<ActionResult<ProductDto>> UpdateProduct([FromQuery] int id, [FromBody] ProductDto productDto)
         {
-            var user = mapper.Map<Product>(userDto);
-            user.Id = id;
+            var product = mapper.Map<Product>(productDto);
+            product.Id = id;
 
-            var updateResult = await productRepositoryAsync.UpdateAsync(user);
+            var updateResult = await productRepositoryAsync.UpdateAsync(product);
 
             if (updateResult > 0)
             {
-                return Ok(userDto);
+                return Ok(productDto);
             }
             else
                 return BadRequest();
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteUser([FromQuery] int id)
+        public async Task<ActionResult<bool>> DeleteProduct([FromQuery] int id)
         {
             var result = await productRepositoryAsync.DeleteAsync(id);
 
