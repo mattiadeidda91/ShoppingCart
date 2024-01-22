@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Hangfire\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ShoppingCart.Abstractions\ShoppingCart.Abstractions.csproj" />
   </ItemGroup>
 
