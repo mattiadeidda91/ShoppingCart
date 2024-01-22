@@ -30,9 +30,6 @@ namespace ShoppingCart.Dependencies.Configurations.Hangfire
                         })
                     ).AddHangfireServer();
 
-            //builder.Services.AddSingleton(typeof(JobExecutor<>));
-            //builder.Services.AddSingleton<ISystemClock, SystemClock>();
-
             return builder;
         }
     }
