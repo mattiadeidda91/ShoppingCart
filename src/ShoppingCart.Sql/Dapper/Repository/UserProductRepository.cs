@@ -23,7 +23,7 @@ namespace ShoppingCart.Sql.Dapper.Repository
 
         public async Task<int> DeleteAsync(int userId, int productId)
         {
-            var connection = dapperDataAccess.GetConnection();
+            using var connection = dapperDataAccess.GetConnection();
 
             try
             {
@@ -44,7 +44,7 @@ namespace ShoppingCart.Sql.Dapper.Repository
 
         public async Task<IEnumerable<UserProduct>> GetAsync()
         {
-            var connection = dapperDataAccess.GetConnection();
+            using var connection = dapperDataAccess.GetConnection();
 
             try
             {
@@ -134,7 +134,7 @@ namespace ShoppingCart.Sql.Dapper.Repository
 
         public async Task<int> InsertAsync(int userId, int productId)
         {
-            var connection = dapperDataAccess.GetConnection();
+            using var connection = dapperDataAccess.GetConnection();
 
             try
             {
