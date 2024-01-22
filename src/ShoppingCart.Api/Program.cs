@@ -1,5 +1,7 @@
+using Dapper;
 using Serilog;
 using ShoppingCart.Api.Configurations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -16,6 +16,7 @@ namespace ShoppingCart.Api.Configurations
             _ = services.AddScoped<IUserRepository, UserRepository>();
             _ = services.AddScoped<IProductRepository, ProductRepository>();
             _ = services.AddScoped<ICartRepository, CartRepository>();
+            _ = services.AddScoped<IUserProductRepository, UserProductRepository>();
 
             return services;
         }

@@ -5,5 +5,7 @@ namespace ShoppingCart.Abstractions.Dapper.Interfaces
     public interface ICartRepository : IRepository<Cart>
     {
         Task<IEnumerable<Cart>> GetCartByUserIdAsync(int userId);
+
+        Task<int> InserCartAsync(int userId);
     }
 }

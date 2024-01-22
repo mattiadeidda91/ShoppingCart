@@ -58,33 +58,15 @@ namespace ShoppingCart.Api.Controllers
                 return NotFound();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<int>> AddCart([FromBody] CartDto cartDto)
+        [HttpPost("User/{userId}")]
+        public async Task<ActionResult<int>> AddCart(int userId)
         {
-            var cart = mapper.Map<Cart>(cartDto);
-
-            var newCartId = await cartRepositoryAsync.InsertAsync(cart);
+            var newCartId = await cartRepositoryAsync.InserCartAsync(userId);
 
             if (newCartId > 0)
             {
                 var route = Url.Action("GetCartById", new { id = newCartId });
                 return Created(route ?? "/GetCartById", newCartId);
-            }    
-            else
-                return BadRequest();
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<CartDto>> UpdateCart([FromQuery] int id, [FromBody] CartDto cartDto)
-        {
-            var cart = mapper.Map<Cart>(cartDto);
-            cart.Id = id;
-
-            var updateResult = await cartRepositoryAsync.UpdateAsync(cart);
-
-            if (updateResult > 0)
-            {
-                return Ok(cartDto);
             }
             else
                 return BadRequest();

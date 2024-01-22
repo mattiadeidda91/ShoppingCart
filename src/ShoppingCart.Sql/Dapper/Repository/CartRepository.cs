@@ -51,5 +51,13 @@ namespace ShoppingCart.Sql.Dapper.Repository
                 connection?.Dispose();
             }
         }
+
+        public async Task<int> InserCartAsync(int userId)
+        {
+            var query = $@"INSERT INTO {TableNameCarts} ([UserID]) VALUES({userId});
+                        SELECT CAST(SCOPE_IDENTITY() as int);";
+
+            return await dapperDataAccess.ExecuteScalarAsync(query);
+        }
     }
 }
