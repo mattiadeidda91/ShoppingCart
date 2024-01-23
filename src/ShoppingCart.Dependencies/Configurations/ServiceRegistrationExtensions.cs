@@ -3,6 +3,9 @@ using ShoppingCart.Abstractions.Dapper;
 using ShoppingCart.Abstractions.Dapper.DbContext;
 using ShoppingCart.Abstractions.Dapper.Interfaces;
 using ShoppingCart.Abstractions.Dapper.IRepository;
+using ShoppingCart.Abstractions.Hangfire;
+using ShoppingCart.Abstractions.Services;
+using ShoppingCart.Dependencies.Jobs;
 using ShoppingCart.Sql.Dapper.Repository;
 
 namespace ShoppingCart.Api.Configurations
@@ -17,6 +20,9 @@ namespace ShoppingCart.Api.Configurations
             _ = services.AddScoped<IProductRepository, ProductRepository>();
             _ = services.AddScoped<ICartRepository, CartRepository>();
             _ = services.AddScoped<IUserProductRepository, UserProductRepository>();
+
+            _ = services.AddScoped<IJob, MyJob>();
+            _ = services.AddTransient<IHangFireActivatorMyJob, HangFireActivatorMyJob>();
 
             return services;
         }

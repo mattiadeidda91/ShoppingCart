@@ -3,7 +3,6 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using ShoppingCart.Dependencies.Configurations.Hangfire;
-using ShoppingCart.Dependencies.Jobs;
 
 namespace ShoppingCart.Dependencies.Configurations.Hangfire
 {

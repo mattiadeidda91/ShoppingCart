@@ -1,11 +1,7 @@
 using Hangfire;
-using Hangfire.Common;
-using Hangfire.Dashboard;
-using Microsoft.AspNetCore.Authorization;
 using Serilog;
 using ShoppingCart.Api.Configurations;
 using ShoppingCart.Dependencies.Configurations.Hangfire;
-using ShoppingCart.Dependencies.Jobs;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,7 +55,7 @@ app.UseAuthorization();
 app.MapAndUseHangfireDashboard(requiredScope: "shoppingCart", allowAnonymousInDevelopment: true);
 
 //Create job
-HangfireIEndpointConventionBuilderExtensions.ConfigureJob();
+HangfireBuilderExtensions.ConfigureJob(app.Services);
 
 app.MapControllers();
 

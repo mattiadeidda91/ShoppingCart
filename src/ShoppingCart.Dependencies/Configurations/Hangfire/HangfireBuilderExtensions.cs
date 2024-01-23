@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ShoppingCart.Dependencies.Jobs;
+using ShoppingCart.Abstractions.Hangfire;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ShoppingCart.Dependencies.Configurations.Hangfire
 {
-    public static class HangfireIEndpointConventionBuilderExtensions
+    public static class HangfireBuilderExtensions
     {
         /// <summary>
         /// Map and use Hangfire Dashboard
@@ -43,13 +43,16 @@ namespace ShoppingCart.Dependencies.Configurations.Hangfire
             return endpoint;
         }
 
-        public static void ConfigureJob()
+        public static void ConfigureJob(IServiceProvider serviceProvider)
         {
-            RecurringJob.AddOrUpdate($"my-job-{Guid.NewGuid()}", () => MyJob.YourMethod(), Cron.Minutely, new RecurringJobOptions
-            {
-                TimeZone = TimeZoneInfo.Local
-            });
-
+            RecurringJob.AddOrUpdate<HangFireActivatorMyJob>(
+                nameof(HangFireActivatorMyJob),
+                job => serviceProvider.GetRequiredService<IHangFireActivatorMyJob>().Run(JobCancellationToken.Null), 
+                Cron.Minutely, 
+                new RecurringJobOptions
+                {
+                    TimeZone = TimeZoneInfo.Local
+                });
         }
     }
 

@@ -1,15 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Logging;
+using ShoppingCart.Abstractions.Dapper.Interfaces;
+using ShoppingCart.Abstractions.Hangfire;
 
 namespace ShoppingCart.Dependencies.Jobs
 {
-    public static class MyJob
+    public class MyJob : IJob
     {
-        public static void YourMethod()
+        private readonly IUserRepository? userRepository;
+        private readonly ILogger<MyJob>? logger;
+
+        public MyJob() { }
+
+        public MyJob(IUserRepository userRepository, ILogger<MyJob>? logger)
         {
+            this.logger = logger;
+            this.userRepository = userRepository;
+        }
+
+        public async Task RunAsync()
+        {
+            ArgumentNullException.ThrowIfNull(userRepository);
+            ArgumentNullException.ThrowIfNull(logger);
+
+            //Do something
+            var users = await userRepository.GetAllAsync();
+
             Console.WriteLine("Hello from Hangfire...");
         }
     }
