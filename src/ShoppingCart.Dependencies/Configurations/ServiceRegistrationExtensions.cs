@@ -4,7 +4,6 @@ using ShoppingCart.Abstractions.Dapper.DbContext;
 using ShoppingCart.Abstractions.Dapper.Interfaces;
 using ShoppingCart.Abstractions.Dapper.IRepository;
 using ShoppingCart.Abstractions.Hangfire;
-using ShoppingCart.Abstractions.Services;
 using ShoppingCart.Dependencies.Jobs;
 using ShoppingCart.Sql.Dapper.Repository;
 
