@@ -1,8 +1,10 @@
 ﻿using Hangfire;
+using Hangfire.RecurringJobAdmin;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using ShoppingCart.Dependencies.Configurations.Hangfire;
+using System.Reflection;
 
 namespace ShoppingCart.Dependencies.Configurations.Hangfire
 {
@@ -27,6 +29,7 @@ namespace ShoppingCart.Dependencies.Configurations.Hangfire
                             UseRecommendedIsolationLevel = true,
                             DisableGlobalLocks = true
                         })
+                    .UseRecurringJobAdmin(Assembly.GetExecutingAssembly())
                     ).AddHangfireServer();
 
             return builder;

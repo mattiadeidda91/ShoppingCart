@@ -1,6 +1,7 @@
 using Hangfire;
 using Serilog;
-using ShoppingCart.Api.Configurations;
+using ShoppingCart.Abstractions.Configurations;
+using ShoppingCart.Dependencies.Configurations;
 using ShoppingCart.Dependencies.Configurations.Hangfire;
 using System.Diagnostics;
 
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.RegisterDataServices();
+
+//Email Options
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(nameof(EmailOptions)));
 
 builder.Services.AddControllers();
 

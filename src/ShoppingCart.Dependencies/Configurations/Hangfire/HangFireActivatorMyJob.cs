@@ -1,7 +1,8 @@
 ﻿using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
+using ShoppingCart.Abstractions.Hangfire;
 
-namespace ShoppingCart.Abstractions.Hangfire
+namespace ShoppingCart.Dependencies.Configurations.Hangfire
 {
     public class HangFireActivatorMyJob : JobActivator, IHangFireActivatorMyJob
     {
