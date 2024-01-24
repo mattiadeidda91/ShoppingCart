@@ -19,4 +19,9 @@
     <Folder Include="Logs\" />
   </ItemGroup>
 
+	<!-- Exclude local appsettings -->
+	<ItemGroup>
+		<Content Update="appsettings.local.json" CopyToPublishDirectory="Never"></Content>
+	</ItemGroup>
+
 </Project>

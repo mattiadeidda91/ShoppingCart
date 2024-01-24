@@ -7,8 +7,13 @@ using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Configure my appsettings.local.json
+builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+
 // Add services to the container.
 builder.Services.RegisterDataServices();
+
+var sql = builder.Configuration.GetConnectionString("SqlConnection");
 
 //Email Options
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(nameof(EmailOptions)));
