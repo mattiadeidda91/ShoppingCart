@@ -48,7 +48,7 @@ namespace ShoppingCart.Dependencies.Configurations.Hangfire
             RecurringJob.AddOrUpdate<HangFireActivatorMyJob>(
                 nameof(HangFireActivatorMyJob),
                 job => serviceProvider.GetRequiredService<IHangFireActivatorMyJob>().Run(JobCancellationToken.Null), 
-                Cron.Minutely, 
+                Cron.Hourly, 
                 new RecurringJobOptions
                 {
                     TimeZone = TimeZoneInfo.Local
