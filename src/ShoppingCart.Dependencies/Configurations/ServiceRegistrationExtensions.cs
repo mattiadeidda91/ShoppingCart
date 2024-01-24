@@ -20,8 +20,9 @@ namespace ShoppingCart.Api.Configurations
             _ = services.AddScoped<ICartRepository, CartRepository>();
             _ = services.AddScoped<IUserProductRepository, UserProductRepository>();
 
+            //Hangfire
             _ = services.AddScoped<IJob, MyJob>();
-            _ = services.AddTransient<IHangFireActivatorMyJob, HangFireActivatorMyJob>();
+            _ = services.AddScoped<IHangFireActivatorMyJob, HangFireActivatorMyJob>();
 
             return services;
         }

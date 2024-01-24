@@ -46,11 +46,11 @@ namespace ShoppingCart.Api.Controllers
         [HttpGet("User/{userId}")]
         public async Task<ActionResult<IEnumerable<CartDto>>> GetCartByUserId(int userId)
         {
-            var cart = await cartRepositoryAsync.GetCartByUserIdAsync(userId);
+            var carts = await cartRepositoryAsync.GetCartByUserIdAsync(userId);
 
-            if (cart != null)
+            if (carts != null && carts.Any())
             {
-                var cartDto = mapper.Map<IEnumerable<CartDto>>(cart);
+                var cartDto = mapper.Map<IEnumerable<CartDto>>(carts);
 
                 return Ok(cartDto);
             }

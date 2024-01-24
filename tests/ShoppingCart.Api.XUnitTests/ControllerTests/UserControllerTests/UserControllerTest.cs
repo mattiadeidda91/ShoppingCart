@@ -7,7 +7,7 @@ using ShoppingCart.Abstractions.Dapper.Interfaces;
 using ShoppingCart.Abstractions.Models.Dtos;
 using ShoppingCart.Api.Controllers;
 
-namespace ShoppingCart.Api.XUnitTests.UserControllerTests
+namespace ShoppingCart.Api.XUnitTests.ControllerTests.UserControllerTests
 {
     public class UserControllerTest : TestBase
     {
@@ -35,7 +35,7 @@ namespace ShoppingCart.Api.XUnitTests.UserControllerTests
             var result = await controller.GetUsers();
 
             // Assert
-            if(expectedResult)
+            if (expectedResult)
                 Assert.IsType<OkObjectResult>(result.Result);
             else
                 Assert.IsType<NotFoundResult>(result.Result);
@@ -74,8 +74,8 @@ namespace ShoppingCart.Api.XUnitTests.UserControllerTests
         {
             // Arrange
             userRepositoryMock.Setup(repo => repo.GetUserAndProductsAsync())
-                .ReturnsAsync(expectedResult ? 
-                    (new List<User> { new User() }, new List<Product> { new Product() }) : 
+                .ReturnsAsync(expectedResult ?
+                    (new List<User> { new User() }, new List<Product> { new Product() }) :
                     (new List<User>(), new List<Product>()));
 
             // Act
@@ -98,7 +98,7 @@ namespace ShoppingCart.Api.XUnitTests.UserControllerTests
         public async Task GetUsersByProductId_Test(bool expectedResult)
         {
             // Arrange
-            userRepositoryMock.Setup(repo => repo.GetUsersByProductIdAsync(It.IsAny<int>())).ReturnsAsync(expectedResult 
+            userRepositoryMock.Setup(repo => repo.GetUsersByProductIdAsync(It.IsAny<int>())).ReturnsAsync(expectedResult
                 ? new List<User> { new User() }
                 : new List<User>());
 
